@@ -2,6 +2,7 @@
 
 import argparse
 import subprocess
+import sys
 from time import sleep
 import json
 from watchdog.observers import Observer
@@ -232,19 +233,22 @@ class FanController:
         if debug:
             print(f"model: {self.laptop_model}, cpu_type: {self.cpu_type}, fan_count: {self.fan_count}")
         while True:
-            if self.switchableFanCurve:
-                self.switchStrategy()
-            self.updateTemperature()
+            try:
+                if self.switchableFanCurve:
+                    self.switchStrategy()
+                self.updateTemperature()
 
-            # update fan speed every "fanSpeedUpdateFrequency" seconds
-            if self._tempIndex % self.fanSpeedUpdateFrequency == 0:
-                self.adaptSpeed()
+                # update fan speed every "fanSpeedUpdateFrequency" seconds
+                if self._tempIndex % self.fanSpeedUpdateFrequency == 0:
+                    self.adaptSpeed()
 
-            if debug:
-                self.printState()
+                if debug:
+                    self.printState()
 
-            sleep(1)
-
+                sleep(1)
+            except KeyboardInterrupt:
+                print("Bye")
+                sys.exit()
 
 def main():
     parser = argparse.ArgumentParser(
