@@ -247,7 +247,7 @@ class FanController:
 
                 sleep(1)
             except KeyboardInterrupt:
-                print "Bye"
+                print("Bye")
                 sys.exit()
 
 
